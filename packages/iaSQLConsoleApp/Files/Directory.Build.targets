@@ -1,0 +1,19 @@
+<Project>
+	<ItemGroup Condition="'$(PkgPath)' != ''">
+		<Compile Remove="$(PkgPath)/iaSQLConsoleApp/Assemblies/**" />
+		<Compile Remove="$(PkgPath)/iaSQLConsoleApp/Data/**" />
+		<Compile Remove="$(PkgPath)/iaSQLConsoleApp/SqlScripts/**" />
+		<Compile Remove="$(PkgPath)/iaSQLConsoleApp/Schemas\**" />
+		<Compile Remove="$(PkgPath)/iaSQLConsoleApp/Resources/**" />
+		<EmbeddedResource Remove="$(PkgPath)/iaSQLConsoleApp/Assemblies/**" />
+		<EmbeddedResource Remove="$(PkgPath)/iaSQLConsoleApp/Data/**" />
+		<EmbeddedResource Remove="$(PkgPath)/iaSQLConsoleApp/SqlScripts/**" />
+		<EmbeddedResource Remove="$(PkgPath)/iaSQLConsoleApp/Schemas/**" />
+		<EmbeddedResource Remove="$(PkgPath)/iaSQLConsoleApp/Resources/**" />
+		<None Remove="$(PkgPath)/iaSQLConsoleApp/Assemblies/**" />
+		<None Remove="$(PkgPath)/iaSQLConsoleApp/Data/**" />
+		<None Remove="$(PkgPath)/iaSQLConsoleApp/SqlScripts/**" />
+		<None Remove="$(PkgPath)/iaSQLConsoleApp/Schemas/**" />
+		<None Remove="$(PkgPath)/iaSQLConsoleApp/Resources/**" />
+  </ItemGroup>
+</Project>

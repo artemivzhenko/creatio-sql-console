@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources Culture="en-US">
+	<Group Type="String">
+		<Items>
+			<Item Name="Caption" Value="SQL Console section page" />
+			<Item Name="LocalizableStrings.Button_w4y6m58_caption.Value" Value="Query log" />
+			<Item Name="LocalizableStrings.PageTitle_caption.Value" Value="SQL Console" />
+		</Items>
+	</Group>
+</Resources>

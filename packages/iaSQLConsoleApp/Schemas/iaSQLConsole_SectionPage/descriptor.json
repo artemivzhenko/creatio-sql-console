@@ -1,0 +1,14 @@
+﻿{
+  "Descriptor": {
+    "UId": "97768802-8b0b-49b2-a7ee-2eb9e22b5788",
+    "Name": "iaSQLConsole_SectionPage",
+    "ModifiedOnUtc": "\/Date(1751490035000)\/",
+    "Parent": {
+      "UId": "b7b898d0-8c77-4953-c097-23fa6800da02",
+      "Name": "ListPageV3Template"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "SQL Console section page",
+    "DependsOn": []
+  }
+}

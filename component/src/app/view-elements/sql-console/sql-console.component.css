@@ -1,0 +1,119 @@
+:host {
+  display: block;
+  background: var(--crt-neutral-0, #fff);
+  font-family: var(--crt-font-family, "Open Sans", sans-serif);
+  font-size: 16px;
+  color: var(--crt-neutral-900, #1f1f1f);
+}
+
+.console-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.editor-container {
+  border: 1px solid var(--crt-neutral-200, #d7d7d7);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.execute-btn.mat-raised-button,
+.execute-btn.mat-mdc-raised-button {
+  background: #21ff21 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .2) !important;
+  border-radius: 6px;
+}
+
+.execute-btn.mat-raised-button:hover:not(:disabled),
+.execute-btn.mat-mdc-raised-button:hover:not(:disabled) {
+  background: #1bdc1b !important;
+}
+
+.editor-container .cm-editor {
+  height: 280px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.action-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+button.mat-raised-button {
+  background: #21ff21;
+  color: #fff;
+  border-radius: 6px;
+  text-transform: none;
+  box-shadow: none;
+  padding: 8px 20px;
+  font-size: 15px;
+}
+
+button.mat-raised-button:hover:not(:disabled) {
+  background: #1bdc1b;
+}
+
+.error-text {
+  color: var(--crt-error-color, #d6293e);
+  white-space: pre-wrap;
+  font-size: 15px;
+}
+
+.affected {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.result-table-wrapper {
+  max-height: 600px;
+  overflow: auto;
+}
+
+.result-table {
+  min-width: 100%;
+  border: 1px solid var(--crt-neutral-200, #d7d7d7);
+  border-radius: 6px;
+}
+
+th.mat-header-cell {
+  background: var(--crt-neutral-50, #f5f7fa);
+  color: var(--crt-neutral-700, #4a4a4a);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+td.mat-cell {
+  font-size: 15px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--crt-neutral-100, #e9e9e9);
+  white-space: nowrap;
+}
+
+.mat-row:nth-child(even) td.mat-cell {
+  background: var(--crt-neutral-25, #fafbfc);
+}
+
+.mat-row:hover td.mat-cell {
+  background: var(--crt-neutral-50, #f5f7fa);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.pager button.mat-button {
+  font-size: 15px;
+  min-width: 110px;
+}
+
+.page-info {
+  font-size: 15px;
+}

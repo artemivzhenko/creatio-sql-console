@@ -1,0 +1,42 @@
+﻿{
+  "Descriptor": {
+    "UId": "63748c84-616b-48d7-bc97-976d0679de30",
+    "Name": "SysImage_SectionIcon_iaSQLConsole",
+    "ModifiedOnUtc": "\/Date(1751460618000)\/",
+    "InstallType": 0,
+    "Schema": {
+      "UId": "93986bfe-2dbd-46bc-9bf9-d03dfefbf3b8",
+      "Name": "SysImage"
+    },
+    "Columns": [
+      {
+        "ColumnUId": "1e236958-f206-4fde-8a0e-6783fc223424",
+        "IsForceUpdate": false,
+        "IsKey": false,
+        "ColumnName": "Data",
+        "DataTypeValueUId": "fa6e6e49-b996-475e-a77e-73904e4c5a88"
+      },
+      {
+        "ColumnUId": "d245dcaf-23bd-4b73-8718-26fdf38b443b",
+        "IsForceUpdate": false,
+        "IsKey": false,
+        "ColumnName": "Name",
+        "DataTypeValueUId": "ddb3a1ee-07e8-4d62-b7a9-d0e618b00fbd"
+      },
+      {
+        "ColumnUId": "be95e737-14e9-4253-b0c4-e280da05434d",
+        "IsForceUpdate": false,
+        "IsKey": false,
+        "ColumnName": "MimeType",
+        "DataTypeValueUId": "325a73b8-0f47-44a0-8412-7606f78003ac"
+      },
+      {
+        "ColumnUId": "ae0e45ca-c495-4fe7-a39d-3ab7278e1617",
+        "IsForceUpdate": false,
+        "IsKey": true,
+        "ColumnName": "Id",
+        "DataTypeValueUId": "23018567-a13c-4320-8687-fd6f9e3699bd"
+      }
+    ]
+  }
+}

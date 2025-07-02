@@ -1,0 +1,14 @@
+﻿{
+  "Descriptor": {
+    "UId": "68d04be1-d089-4e2c-939a-39458c9b2cd8",
+    "Name": "iaSQLLog_ListPage",
+    "ModifiedOnUtc": "\/Date(1751490010000)\/",
+    "Parent": {
+      "UId": "b7b898d0-8c77-4953-c097-23fa6800da02",
+      "Name": "ListPageV3Template"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "SQL log list page",
+    "DependsOn": []
+  }
+}

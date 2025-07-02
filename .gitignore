@@ -1,0 +1,4 @@
+component/node_modules/*
+component/.angular/*
+.nuget/*
+.clio/*

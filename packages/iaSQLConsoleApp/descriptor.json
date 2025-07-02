@@ -1,0 +1,18 @@
+﻿{
+  "Descriptor": {
+    "UId": "627ff58f-053d-4e13-85a3-28e49a1a80c2",
+    "Name": "iaSQLConsoleApp",
+    "Type": 1,
+    "ModifiedOnUtc": "\/Date(1731959136000)\/",
+    "Maintainer": "IvzhenkoArtem",
+    "ProjectPath": "Files/iaSQLConsoleApp.csproj",
+    "DependsOn": [
+      {
+        "UId": "012e2e14-082b-ac2b-da5a-2fc87bad41d4",
+        "PackageVersion": "7.8.0",
+        "Name": "CrtCore",
+        "Type": 1
+      }
+    ]
+  }
+}

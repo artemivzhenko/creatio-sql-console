@@ -1,0 +1,15 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{daa9b632-4bd3-4342-a981-a157a7c7ef17}") = "iaSQLConsoleApp", "..\packages\iaSQLConsoleApp\Files\iaSQLConsoleApp.csproj", "{2502c053-a22a-4a14-b035-10f090b6532b}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+			{2502c053-a22a-4a14-b035-10f090b6532b}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+			{2502c053-a22a-4a14-b035-10f090b6532b}.Debug|Any CPU.Build.0 = Debug|Any CPU
+			{2502c053-a22a-4a14-b035-10f090b6532b}.Release|Any CPU.ActiveCfg = Release|Any CPU
+			{2502c053-a22a-4a14-b035-10f090b6532b}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

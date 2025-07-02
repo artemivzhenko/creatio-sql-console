@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources Culture="it-IT">
+	<Group Type="String">
+		<Items>
+			<Item Name="Caption" Value="SQL Console" />
+			<Item Name="Columns.iaName.Caption" Value="Nome" />
+		</Items>
+	</Group>
+</Resources>

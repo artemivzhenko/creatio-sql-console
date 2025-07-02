@@ -1,0 +1,5 @@
+<Project>
+	<ItemGroup Label="Entity Files" Condition="'$(PkgPath)' != ''">
+		<Compile Include="$(PkgPath)/iaSQLConsoleApp/Schemas/iaSQLConsole/iaSQLConsole.cs" Condition="Exists('$(PkgPath)/iaSQLConsoleApp/Schemas/iaSQLConsole/iaSQLConsole.cs')" />
+	</ItemGroup>
+</Project>

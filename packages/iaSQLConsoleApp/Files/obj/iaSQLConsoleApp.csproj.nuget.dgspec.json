@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj": {}
+  },
+  "projects": {
+    "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj": {
+      "version": "8.3.0.3017",
+      "restore": {
+        "projectUniqueName": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+        "projectName": "iaSQLConsoleApp",
+        "projectPath": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+        "packagesPath": "C:\\Windows\\TEMP\\89\\MS_iis-e3674b4083e847a6\\Default\\dotnet\\.nuget\\packages\\",
+        "outputPath": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Windows\\TEMP\\89\\MS_iis-e3674b4083e847a6\\Default\\dotnet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
