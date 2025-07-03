@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{daa9b632-4bd3-4342-a981-a157a7c7ef17}") = "iaSQLConsoleApp", "..\packages\iaSQLConsoleApp\Files\iaSQLConsoleApp.csproj", "{2502c053-a22a-4a14-b035-10f090b6532b}"
+Project("{c5fac20b-402a-40e2-a40d-0138946e3e15}") = "iaSQLConsoleApp", "..\packages\iaSQLConsoleApp\Files\iaSQLConsoleApp.csproj", "{c48b7c45-2e4f-4ba9-a006-6569f5028d8b}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -7,9 +7,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-			{2502c053-a22a-4a14-b035-10f090b6532b}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-			{2502c053-a22a-4a14-b035-10f090b6532b}.Debug|Any CPU.Build.0 = Debug|Any CPU
-			{2502c053-a22a-4a14-b035-10f090b6532b}.Release|Any CPU.ActiveCfg = Release|Any CPU
-			{2502c053-a22a-4a14-b035-10f090b6532b}.Release|Any CPU.Build.0 = Release|Any CPU
+			{c48b7c45-2e4f-4ba9-a006-6569f5028d8b}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+			{c48b7c45-2e4f-4ba9-a006-6569f5028d8b}.Debug|Any CPU.Build.0 = Debug|Any CPU
+			{c48b7c45-2e4f-4ba9-a006-6569f5028d8b}.Release|Any CPU.ActiveCfg = Release|Any CPU
+			{c48b7c45-2e4f-4ba9-a006-6569f5028d8b}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

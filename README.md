@@ -1,7 +1,7 @@
 # creatio-sql-console
 CRM Creatio SQL Console
 
-# SQL Console for Creatio (Freedom UI 8.2 +)
+# SQL Console for Creatio (Freedom UI 8.1 +)
 
 A lightweight Angular 17 component that embeds an SQL editor and result viewer
 directly into **Creatio Freedom UI**.  
@@ -22,7 +22,7 @@ Open Studio ➜ SQL Console in the side-bar.
 
 Type an SQL statement in the highlighted editor.
 
-Press Execute or use Ctrl / Cmd + Enter.
+Press Execute or use Ctrl / Cmd + Z.
 
 Results show in a paginated table.
 Large result-sets can be scrolled horizontally and vertically.
