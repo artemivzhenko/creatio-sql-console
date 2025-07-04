@@ -90,10 +90,7 @@ namespace Terrasoft.Configuration.iaQueryServiceNamespace
                 return response;
             }
             
-            // ⚠️ ВАЖНО: На данном этапе сервис не имеет проверки прав доступа.
-            // Любой аутентифицированный пользователь может выполнить любой запрос.
-            // Необходимо добавить проверку прав текущего пользователя.
-            // Например:
+
             // if (!UserConnection.CurrentUser.IsSystemAdministrator) {
             //     response.Success = false;
             //     response.Error = "Access denied.";

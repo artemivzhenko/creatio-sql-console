@@ -5,6 +5,14 @@
     <button mat-raised-button class="execute-btn" (click)="execute()">
       Execute
     </button>
+    <button
+      mat-raised-button
+      class="export-btn"
+      (click)="exportCsv()"
+      [disabled]="!rawData().length"
+    >
+      Export to CSV
+    </button>
   </div>
 
   <div *ngIf="errorText()" class="error-text">{{ errorText() }}</div>
@@ -16,22 +24,30 @@
   <div class="result-table-wrapper" *ngIf="rawData().length">
     <table
       mat-table
-      [dataSource]="pagedData()"
+      matSort
+      [dataSource]="dataSource"
       class="result-table"
     >
       <ng-container
         *ngFor="let column of displayedColumns()"
         [matColumnDef]="column"
       >
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-        <td mat-cell *matCellDef="let row">{{ row[column] }}</td>
+        <th
+          mat-sort-header
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          {{ column }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row[column] }}
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
     </table>
   </div>
-
 
   <div
     class="pager"

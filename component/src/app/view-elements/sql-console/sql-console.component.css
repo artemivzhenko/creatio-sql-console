@@ -1,9 +1,9 @@
 :host {
   display: block;
   background: var(--crt-neutral-0, #fff);
-  font-family: var(--crt-font-family, "Open Sans", sans-serif);
+  font-family: var(--crt-font-family,"Open Sans",sans-serif);
   font-size: 16px;
-  color: var(--crt-neutral-900, #1f1f1f);
+  color: var(--crt-neutral-900,#1f1f1f);
 }
 
 .console-wrapper {
@@ -14,21 +14,9 @@
 }
 
 .editor-container {
-  border: 1px solid var(--crt-neutral-200, #d7d7d7);
+  border: 1px solid var(--crt-neutral-200,#d7d7d7);
   border-radius: 6px;
   overflow: hidden;
-}
-.execute-btn.mat-raised-button,
-.execute-btn.mat-mdc-raised-button {
-  background: #21ff21 !important;
-  color: #fff !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2) !important;
-  border-radius: 6px;
-}
-
-.execute-btn.mat-raised-button:hover:not(:disabled),
-.execute-btn.mat-mdc-raised-button:hover:not(:disabled) {
-  background: #1bdc1b !important;
 }
 
 .editor-container .cm-editor {
@@ -39,25 +27,34 @@
 
 .action-row {
   display: flex;
-  justify-content: flex-start;
+  gap: 12px;
 }
 
-button.mat-raised-button {
-  background: #21ff21;
+.execute-btn.mat-raised-button,
+.execute-btn.mat-mdc-raised-button {
+  background: #27a027!important;
+  color: #fff!important;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2)!important;
+  border-radius: 6px;
+}
+
+.execute-btn.mat-raised-button:hover:not(:disabled),
+.execute-btn.mat-mdc-raised-button:hover:not(:disabled) {
+  background: #27a027!important;
+}
+
+.export-btn.mat-raised-button {
+  background: var(--crt-primary-color,#0091ea);
   color: #fff;
   border-radius: 6px;
-  text-transform: none;
-  box-shadow: none;
-  padding: 8px 20px;
-  font-size: 15px;
 }
 
-button.mat-raised-button:hover:not(:disabled) {
-  background: #1bdc1b;
+.export-btn.mat-raised-button:hover:not(:disabled) {
+  background: var(--crt-primary-hover,#007acc);
 }
 
 .error-text {
-  color: var(--crt-error-color, #d6293e);
+  color: var(--crt-error-color,#d6293e);
   white-space: pre-wrap;
   font-size: 15px;
 }
@@ -74,32 +71,33 @@ button.mat-raised-button:hover:not(:disabled) {
 
 .result-table {
   min-width: 100%;
-  border: 1px solid var(--crt-neutral-200, #d7d7d7);
+  border: 1px solid var(--crt-neutral-200,#d7d7d7);
   border-radius: 6px;
 }
 
 th.mat-header-cell {
-  background: var(--crt-neutral-50, #f5f7fa);
-  color: var(--crt-neutral-700, #4a4a4a);
+  background: var(--crt-neutral-50,#f5f7fa);
+  color: var(--crt-neutral-700,#4a4a4a);
   font-weight: 600;
   font-size: 15px;
   padding: 10px 12px;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 td.mat-cell {
   font-size: 15px;
   padding: 10px 12px;
-  border-top: 1px solid var(--crt-neutral-100, #e9e9e9);
+  border-top: 1px solid var(--crt-neutral-100,#e9e9e9);
   white-space: nowrap;
 }
 
 .mat-row:nth-child(even) td.mat-cell {
-  background: var(--crt-neutral-25, #fafbfc);
+  background: var(--crt-neutral-25,#fafbfc);
 }
 
 .mat-row:hover td.mat-cell {
-  background: var(--crt-neutral-50, #f5f7fa);
+  background: var(--crt-neutral-50,#f5f7fa);
 }
 
 .pager {

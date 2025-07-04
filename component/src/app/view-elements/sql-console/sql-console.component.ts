@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientService, SysSettingsService } from '@creatio-devkit/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatSortModule, MatSort } from '@angular/material/sort';
 import * as CryptoJS from 'crypto-js';
 
 import { basicSetup, EditorView } from 'codemirror';
@@ -20,6 +21,7 @@ import { EditorState } from '@codemirror/state';
 import { sql } from '@codemirror/lang-sql';
 import { CrtViewElement } from '@creatio-devkit/common';
 import { keymap } from '@codemirror/view';
+
 
 type QueryResult = {
   success: boolean;
@@ -29,8 +31,9 @@ type QueryResult = {
   error?: string;
 };
 
+
 @Component({
-  selector: 'ia-sqlconsole',
+  selector: 'ia-sql-console-component',
   templateUrl: './sql-console.component.html',
   styleUrls: ['./sql-console.component.css'],
   standalone: true,
@@ -38,7 +41,8 @@ type QueryResult = {
     CommonModule,
     FormsModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ]
 })
 @CrtViewElement({
@@ -49,6 +53,8 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
   @Input() pageSize = 100;
 
   @ViewChild('editor', { static: true }) editorContainer!: ElementRef<HTMLElement>;
+  @ViewChild(MatSort) sort!: MatSort;
+
   editorView!: EditorView;
 
   queryText = '';
@@ -57,6 +63,7 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
   errorText = signal<string | null>(null);
   currentPage = signal(0);
   displayedColumns = signal<string[]>([]);
+  dataSource = new MatTableDataSource<Record<string, unknown>>([]);
 
   readonly pagedData = computed(() => {
     const start = this.currentPage() * this.pageSize;
@@ -92,10 +99,8 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
             }
           }
         ]),
-        EditorView.updateListener.of(update => {
-          if (update.docChanged) {
-            this.queryText = update.state.doc.toString();
-          }
+        EditorView.updateListener.of(u => {
+          if (u.docChanged) this.queryText = u.state.doc.toString();
         })
       ]
     });
@@ -136,7 +141,7 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
         { queryText: encryptedQuery }, {}
       );
       const result: QueryResult =
-      resp?.body?.ExecuteQueryResult ?? resp?.body;
+        resp?.body?.ExecuteQueryResult ?? resp?.body;
 
       if (!result?.success) {
         this.errorText.set(result?.error || 'Unknown error');
@@ -159,11 +164,7 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
         rows = rows.map(r => {
           Object.keys(r).forEach(k => {
             const v = r[k];
-            if (
-              typeof v === 'string' &&
-              v.startsWith('/Date(') &&
-              v.endsWith(')/')
-            ) {
+            if (typeof v === 'string' && v.startsWith('/Date(') && v.endsWith(')/')) {
               const ms = parseInt(v.slice(6, v.indexOf('+', 6)), 10);
               const d = new Date(ms);
               r[k] =
@@ -187,26 +188,50 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
         this.rawData.set(tableRows);
         if (tableRows.length) {
           this.displayedColumns.set(Object.keys(tableRows[0]));
+          this.updateDataSource();
         }
-      }
-      else if (result.type === 'NonQuery') {
+      } else if (result.type === 'NonQuery') {
         this.rowsAffected.set(result.rowsAffected ?? 0);
       }
-    }
-    catch (e: any) {
+    } catch (e: any) {
       this.errorText.set(e.message ?? 'Network error');
     }
+  }
+
+  updateDataSource(): void {
+    this.dataSource = new MatTableDataSource(this.pagedData());
+    this.dataSource.sort = this.sort;
   }
 
   next(): void {
     if (this.currentPage() < this.totalPages() - 1) {
       this.currentPage.set(this.currentPage() + 1);
+      this.updateDataSource();
     }
   }
 
   back(): void {
     if (this.currentPage() > 0) {
       this.currentPage.set(this.currentPage() - 1);
+      this.updateDataSource();
     }
+  }
+
+  exportCsv(): void {
+    if (!this.rawData().length) return;
+    const cols = this.displayedColumns();
+    const lines = [
+      cols.join(',')
+    ];
+    for (const row of this.rawData()) {
+      lines.push(cols.map(c => `"${(row[c] ?? '').toString().replace(/"/g, '""')}"`).join(','));
+    }
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'query_result.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 }
