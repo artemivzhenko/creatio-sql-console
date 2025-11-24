@@ -2,7 +2,7 @@
   "Descriptor": {
     "UId": "f14e200a-8912-4763-86b8-665641709a75",
     "Name": "iaQueryService",
-    "ModifiedOnUtc": "\/Date(1751492207000)\/",
+    "ModifiedOnUtc": "\/Date(1754986399000)\/",
     "ManagerName": "SourceCodeSchemaManager",
     "Caption": "Query service",
     "DependsOn": []

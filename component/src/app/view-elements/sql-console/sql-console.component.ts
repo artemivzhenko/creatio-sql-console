@@ -10,18 +10,15 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientService, SysSettingsService } from '@creatio-devkit/common';
+import { HttpClientService } from '@creatio-devkit/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import * as CryptoJS from 'crypto-js';
 
 import { basicSetup, EditorView } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { sql } from '@codemirror/lang-sql';
 import { CrtViewElement } from '@creatio-devkit/common';
 import { keymap } from '@codemirror/view';
-
 
 type QueryResult = {
   success: boolean;
@@ -30,7 +27,6 @@ type QueryResult = {
   rowsAffected?: number;
   error?: string;
 };
-
 
 @Component({
   selector: 'ia-sql-console-component',
@@ -41,8 +37,7 @@ type QueryResult = {
     CommonModule,
     FormsModule,
     MatButtonModule,
-    MatTableModule,
-    MatSortModule
+    MatTableModule
   ]
 })
 @CrtViewElement({
@@ -53,7 +48,6 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
   @Input() pageSize = 100;
 
   @ViewChild('editor', { static: true }) editorContainer!: ElementRef<HTMLElement>;
-  @ViewChild(MatSort) sort!: MatSort;
 
   editorView!: EditorView;
 
@@ -65,9 +59,55 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
   displayedColumns = signal<string[]>([]);
   dataSource = new MatTableDataSource<Record<string, unknown>>([]);
 
+  sortColumn = signal<string | null>(null);
+  sortDirection = signal<'asc' | 'desc'>('asc');
+
+  readonly sortedData = computed(() => {
+    const data = [...this.rawData()];
+    const col = this.sortColumn();
+    const dir = this.sortDirection();
+
+    if (!col) {
+      return data;
+    }
+
+    return data.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
+      const av = a[col];
+      const bv = b[col];
+
+      if (av == null && bv == null) {
+        return 0;
+      }
+      if (av == null) {
+        return dir === 'asc' ? -1 : 1;
+      }
+      if (bv == null) {
+        return dir === 'asc' ? 1 : -1;
+      }
+
+      const an = typeof av === 'number' ? av : Number(av);
+      const bn = typeof bv === 'number' ? bv : Number(bv);
+
+      if (!Number.isNaN(an) && !Number.isNaN(bn)) {
+        return dir === 'asc' ? an - bn : bn - an;
+      }
+
+      const as = String(av).toLowerCase();
+      const bs = String(bv).toLowerCase();
+
+      if (as < bs) {
+        return dir === 'asc' ? -1 : 1;
+      }
+      if (as > bs) {
+        return dir === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  });
+
   readonly pagedData = computed(() => {
     const start = this.currentPage() * this.pageSize;
-    return this.rawData().slice(start, start + this.pageSize);
+    return this.sortedData().slice(start, start + this.pageSize);
   });
 
   readonly totalPages = computed(() =>
@@ -100,7 +140,9 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
           }
         ]),
         EditorView.updateListener.of(u => {
-          if (u.docChanged) this.queryText = u.state.doc.toString();
+          if (u.docChanged) {
+            this.queryText = u.state.doc.toString();
+          }
         })
       ]
     });
@@ -121,29 +163,27 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
     this.rowsAffected.set(null);
     this.displayedColumns.set([]);
     this.currentPage.set(0);
+    this.sortColumn.set(null);
+    this.sortDirection.set('asc');
 
-    const sysSettingsService = new SysSettingsService();
-    const secretSetting = await sysSettingsService.getByCode('iaSQLSecret');
-    const secret = secretSetting?.value || '';
-    const key = CryptoJS.enc.Utf8.parse(secret.padEnd(32, '0').slice(0, 32));
-    const encryptedQuery = CryptoJS.AES.encrypt(
-      this.queryText,
-      key,
-      { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 }
-    ).ciphertext.toString(CryptoJS.enc.Base64);
-
-
+    if (!this.queryText || !this.queryText.trim()) {
+      this.errorText.set('Query text cannot be empty.');
+      return;
+    }
 
     const http = new HttpClientService();
+
     try {
       const resp: any = await http.post(
         '/rest/iaQueryService/ExecuteQuery',
-        { queryText: encryptedQuery }, {}
+        { queryText: this.queryText },
+        {}
       );
-      const result: QueryResult =
-        resp?.body?.ExecuteQueryResult ?? resp?.body;
 
-      if (!result?.success) {
+      const result: QueryResult =
+        resp?.body?.ExecuteQueryResult ?? resp?.body ?? resp;
+
+      if (!result || result.success === false) {
         this.errorText.set(result?.error || 'Unknown error');
         return;
       }
@@ -165,7 +205,11 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
           Object.keys(r).forEach(k => {
             const v = r[k];
             if (typeof v === 'string' && v.startsWith('/Date(') && v.endsWith(')/')) {
-              const ms = parseInt(v.slice(6, v.indexOf('+', 6)), 10);
+              const plusIndex = v.indexOf('+', 6);
+              const msPart = plusIndex > 0
+                ? v.slice(6, plusIndex)
+                : v.slice(6, v.length - 2);
+              const ms = parseInt(msPart, 10);
               const d = new Date(ms);
               r[k] =
                 d.getFullYear() +
@@ -186,21 +230,26 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
 
         const tableRows = rows as Record<string, unknown>[];
         this.rawData.set(tableRows);
+
         if (tableRows.length) {
           this.displayedColumns.set(Object.keys(tableRows[0]));
+          this.updateDataSource();
+        } else {
           this.updateDataSource();
         }
       } else if (result.type === 'NonQuery') {
         this.rowsAffected.set(result.rowsAffected ?? 0);
+        this.updateDataSource();
+      } else {
+        this.errorText.set('Unsupported response type.');
       }
     } catch (e: any) {
-      this.errorText.set(e.message ?? 'Network error');
+      this.errorText.set(e?.message ?? 'Network error');
     }
   }
 
   updateDataSource(): void {
     this.dataSource = new MatTableDataSource(this.pagedData());
-    this.dataSource.sort = this.sort;
   }
 
   next(): void {
@@ -217,16 +266,38 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  exportCsv(): void {
-    if (!this.rawData().length) return;
-    const cols = this.displayedColumns();
-    const lines = [
-      cols.join(',')
-    ];
-    for (const row of this.rawData()) {
-      lines.push(cols.map(c => `"${(row[c] ?? '').toString().replace(/"/g, '""')}"`).join(','));
+  onSort(column: string): void {
+    if (this.sortColumn() === column) {
+      this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
     }
-    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    this.currentPage.set(0);
+    this.updateDataSource();
+  }
+
+  exportCsv(): void {
+    if (!this.rawData().length) {
+      return;
+    }
+    const cols = this.displayedColumns();
+    const lines: string[] = [cols.join(',')];
+
+    for (const row of this.rawData()) {
+      lines.push(
+        cols
+          .map(c => {
+            const value = row[c] ?? '';
+            return `"${value.toString().replace(/"/g, '""')}"`;
+          })
+          .join(',')
+      );
+    }
+
+    const blob = new Blob([lines.join('\r\n')], {
+      type: 'text/csv;charset=utf-8;'
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

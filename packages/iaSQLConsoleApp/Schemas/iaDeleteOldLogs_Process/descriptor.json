@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "85a21086-dce5-4e2a-988e-4b748dde6941",
+    "Name": "iaDeleteOldLogs_Process",
+    "ModifiedOnUtc": "\/Date(1754985933000)\/",
+    "ManagerName": "ProcessSchemaManager",
+    "Caption": "Delete old logs",
+    "DependsOn": []
+  }
+}

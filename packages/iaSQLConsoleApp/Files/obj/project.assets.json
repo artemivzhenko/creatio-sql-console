@@ -8,23 +8,23 @@
     ".NETFramework,Version=v4.7.2": []
   },
   "packageFolders": {
-    "C:\\Windows\\TEMP\\89\\MS_iis-e3674b4083e847a6\\Default\\dotnet\\.nuget\\packages\\": {},
+    "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "8.3.0.3017",
+    "version": "8.3.1.4481",
     "restore": {
-      "projectUniqueName": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+      "projectUniqueName": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
       "projectName": "iaSQLConsoleApp",
-      "projectPath": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
-      "packagesPath": "C:\\Windows\\TEMP\\89\\MS_iis-e3674b4083e847a6\\Default\\dotnet\\.nuget\\packages\\",
-      "outputPath": "D:\\App\\169861-crm-bundle\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\obj\\",
+      "projectPath": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+      "packagesPath": "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\.nuget\\packages\\",
+      "outputPath": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Windows\\TEMP\\89\\MS_iis-e3674b4083e847a6\\Default\\dotnet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net472"

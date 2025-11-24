@@ -24,7 +24,6 @@
   <div class="result-table-wrapper" *ngIf="rawData().length">
     <table
       mat-table
-      matSort
       [dataSource]="dataSource"
       class="result-table"
     >
@@ -33,11 +32,17 @@
         [matColumnDef]="column"
       >
         <th
-          mat-sort-header
           mat-header-cell
           *matHeaderCellDef
+          (click)="onSort(column)"
+          [class.sorted]="sortColumn() === column"
+          [class.sorted-asc]="sortColumn() === column && sortDirection() === 'asc'"
+          [class.sorted-desc]="sortColumn() === column && sortDirection() === 'desc'"
         >
-          {{ column }}
+          <span class="header-text">{{ column }}</span>
+          <span class="sort-indicator" *ngIf="sortColumn() === column">
+            {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+          </span>
         </th>
         <td mat-cell *matCellDef="let row">
           {{ row[column] }}
