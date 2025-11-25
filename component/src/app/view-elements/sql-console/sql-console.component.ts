@@ -51,6 +51,8 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
 
   editorView!: EditorView;
 
+  private readonly storageKey = 'ia-sql-console-last-query';
+
   queryText = '';
   rawData = signal<Record<string, unknown>[]>([]);
   rowsAffected = signal<number | null>(null);
@@ -115,6 +117,8 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
   );
 
   ngAfterViewInit(): void {
+    this.loadQueryFromStorage();
+
     const state = EditorState.create({
       doc: this.queryText,
       extensions: [
@@ -135,6 +139,7 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
                 changes: { from: 0, to: view.state.doc.length, insert: '' }
               });
               this.queryText = '';
+              this.saveQueryToStorage();
               return true;
             }
           }
@@ -142,6 +147,7 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
         EditorView.updateListener.of(u => {
           if (u.docChanged) {
             this.queryText = u.state.doc.toString();
+            this.saveQueryToStorage();
           }
         })
       ]
@@ -155,6 +161,29 @@ export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.editorView?.destroy();
+  }
+
+  private loadQueryFromStorage(): void {
+    try {
+      if (typeof window === 'undefined') {
+        return;
+      }
+      const stored = window.localStorage.getItem(this.storageKey);
+      if (stored !== null) {
+        this.queryText = stored;
+      }
+    } catch {
+    }
+  }
+
+  private saveQueryToStorage(): void {
+    try {
+      if (typeof window === 'undefined') {
+        return;
+      }
+      window.localStorage.setItem(this.storageKey, this.queryText ?? '');
+    } catch {
+    }
   }
 
   async execute(): Promise<void> {
