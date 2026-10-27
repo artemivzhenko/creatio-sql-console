@@ -1,0 +1,35 @@
+<div class="tabs-bar">
+  <button
+    *ngFor="let tab of tabs()"
+    class="tab-btn"
+    [class.active]="tab.id === activeTabId()"
+    (click)="switchTab(tab.id)"
+    (dblclick)="startEditing(tab, $event)"
+  >
+    <input
+      *ngIf="editingTabId() === tab.id"
+      class="tab-name-input"
+      [(ngModel)]="editingLabel"
+      (blur)="finishEditing(tab.id)"
+      (keydown.enter)="finishEditing(tab.id)"
+      (keydown.escape)="cancelEditing()"
+      (click)="$event.stopPropagation()"
+      (dblclick)="$event.stopPropagation()"
+    />
+    <span class="tab-label" *ngIf="editingTabId() !== tab.id">{{ tab.label }}</span>
+    <span
+      *ngIf="tabs().length > 1 && editingTabId() !== tab.id"
+      class="tab-close"
+      (click)="closeTab(tab.id, $event)"
+    >×</span>
+  </button>
+
+  <button
+    class="tab-add-btn"
+    [disabled]="tabs().length >= maxTabs"
+    [title]="'New tab (max ' + maxTabs + ')'"
+    (click)="addTab()"
+  >+</button>
+</div>
+
+<div class="editor-container" #editor></div>

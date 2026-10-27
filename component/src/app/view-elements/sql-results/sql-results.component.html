@@ -1,0 +1,66 @@
+<div class="results-wrapper">
+
+  <div *ngIf="isLoading" class="query-loading">
+    <span class="loading-spinner"></span>
+    <span class="loading-time">{{ formatMs(elapsedMs) }}</span>
+  </div>
+
+  <div *ngIf="errorText" class="error-text">{{ errorText }}</div>
+
+  <div *ngIf="rowsAffected !== null" class="affected">
+    Rows affected: {{ rowsAffected }}
+  </div>
+
+  <div *ngIf="!isLoading && emptyResult" class="affected">
+    Empty Result
+  </div>
+
+  <div *ngIf="!isLoading && truncated" class="affected">
+    Result truncated: showing the first {{ rawData.length }} rows. Narrow your query to see the rest.
+  </div>
+
+  <div class="result-meta" *ngIf="!isLoading && (rawData.length || executionMs !== null)">
+    <span *ngIf="rawData.length" class="row-count">Rows: {{ rawData.length }}</span>
+    <span *ngIf="executionMs !== null" class="exec-time">{{ formatMs(executionMs) }}</span>  </div>
+
+  <div class="result-table-wrapper" *ngIf="rawData.length">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th class="row-num-cell">#</th>
+          <th
+            *ngFor="let column of displayedColumns"
+            (click)="onSort(column)"
+            [class.sorted]="sortColumn() === column"
+            [class.sorted-asc]="sortColumn() === column && sortDirection() === 'asc'"
+            [class.sorted-desc]="sortColumn() === column && sortDirection() === 'desc'"
+          >
+            <span class="header-text">{{ column }}</span>
+            <span class="sort-indicator" *ngIf="sortColumn() === column">
+              {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of pagedData(); let ri = index">
+          <td class="row-num-cell">{{ currentPage() * pageSize + ri + 1 }}</td>
+          <td
+            *ngFor="let column of displayedColumns; let ci = index"
+            class="copyable-cell"
+            [class.cell-copied]="copiedCell() === ri + '_' + ci"
+            (click)="copyCellValue(row[column], ri + '_' + ci)"
+            title="Click to copy"
+          >{{ row[column] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager" *ngIf="rawData.length && totalPages() > 1">
+    <button class="pager-btn" (click)="back()" [disabled]="currentPage() === 0">Back</button>
+    <span class="page-info">Page {{ currentPage() + 1 }} / {{ totalPages() }}</span>
+    <button class="pager-btn" (click)="next()" [disabled]="currentPage() >= totalPages() - 1">Next</button>
+  </div>
+
+</div>

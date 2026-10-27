@@ -1,0 +1,106 @@
+.tabs-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  border-bottom: 2px solid var(--crt-neutral-200, #d7d7d7);
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: var(--crt-neutral-100, #f0f0f0);
+  color: var(--crt-neutral-600, #666);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.12s;
+  flex-shrink: 0;
+  min-width: 100px;
+  justify-content: space-between;
+}
+
+.tab-btn:hover { background: var(--crt-neutral-200, #e0e0e0); }
+
+.tab-btn.active {
+  background: var(--crt-neutral-0, #fff);
+  color: var(--crt-neutral-900, #1f1f1f);
+  border-color: var(--crt-neutral-200, #d7d7d7);
+  font-weight: 600;
+  margin-bottom: -2px;
+  padding-bottom: 12px;
+}
+
+.tab-label {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-close {
+  font-size: 15px;
+  line-height: 1;
+  color: var(--crt-neutral-400, #aaa);
+  border-radius: 3px;
+  padding: 1px 3px;
+}
+
+.tab-close:hover {
+  background: var(--crt-neutral-300, #ccc);
+  color: var(--crt-neutral-900, #1f1f1f);
+}
+
+.tab-name-input {
+  width: 100px;
+  border: none;
+  border-bottom: 2px solid var(--crt-primary-color, #0091ea);
+  background: transparent;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--crt-neutral-900, #1f1f1f);
+  outline: none;
+  padding: 0 2px;
+}
+
+.tab-add-btn {
+  padding: 4px 12px 6px;
+  border: none;
+  background: transparent;
+  color: var(--crt-neutral-500, #888);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  font-family: inherit;
+  border-radius: 4px 4px 0 0;
+  flex-shrink: 0;
+}
+
+.tab-add-btn:hover:not(:disabled) {
+  background: var(--crt-neutral-200, #e0e0e0);
+  color: var(--crt-neutral-900, #1f1f1f);
+}
+
+.tab-add-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.editor-container {
+  border: 1px solid var(--crt-neutral-200, #d7d7d7);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.editor-container :global(.cm-editor) {
+  height: 280px;
+  font-size: 15px;
+  line-height: 22px;
+}

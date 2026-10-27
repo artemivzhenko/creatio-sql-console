@@ -1,39 +1,44 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
-    ".NETFramework,Version=v4.7.2": {}
+    "net472": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETFramework,Version=v4.7.2": []
+    "net472": []
   },
   "packageFolders": {
-    "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\WINDOWS\\TEMP\\5\\IIS APPPOOL_ti823\\Default\\dotnet\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "8.3.1.4481",
+    "version": "8.2.3.1351",
     "restore": {
-      "projectUniqueName": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+      "projectUniqueName": "C:\\inetpub\\wwwroot\\clio\\ti823\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
       "projectName": "iaSQLConsoleApp",
-      "projectPath": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
-      "packagesPath": "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\.nuget\\packages\\",
-      "outputPath": "D:\\App\\114104-studio\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\obj\\",
+      "projectPath": "C:\\inetpub\\wwwroot\\clio\\ti823\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\iaSQLConsoleApp.csproj",
+      "packagesPath": "C:\\WINDOWS\\TEMP\\5\\IIS APPPOOL_ti823\\Default\\dotnet\\.nuget\\packages\\",
+      "outputPath": "C:\\inetpub\\wwwroot\\clio\\ti823\\Terrasoft.WebApp\\Terrasoft.Configuration\\Pkg\\iaSQLConsoleApp\\Files\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Windows\\TEMP\\163\\MS_iis-0b2e8bba3d0e4f87\\Default\\dotnet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\WINDOWS\\TEMP\\5\\IIS APPPOOL_ti823\\Default\\dotnet\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net472"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net472": {
+          "framework": "net472",
           "targetAlias": "net472",
           "projectReferences": {}
         }
@@ -47,12 +52,14 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net472": {
+        "framework": "net472",
         "targetAlias": "net472",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

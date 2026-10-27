@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="dev-n8" />
+    <BuildType Name="dev-nf" />
+  </Configurations>
+  <Project Path="packages\iaSQLConsoleV2\Files\iaSQLConsoleV2.csproj" />
+  <Project Path="packages\iaSQLConsoleApp\Files\iaSQLConsoleApp.csproj" />
+</Solution>

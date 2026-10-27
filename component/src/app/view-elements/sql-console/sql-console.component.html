@@ -1,75 +1,19 @@
 <div class="console-wrapper">
-  <div class="editor-container" #editor></div>
+  <ia-sql-editor
+    (queryReady)="onQueryReady($event)"
+    (queryChanged)="onQueryChanged($event)"
+    (execute)="onExecute($event)"
+    (save)="onSave($event)"
+  ></ia-sql-editor>
 
-  <div class="action-row">
-    <button mat-raised-button class="execute-btn" (click)="execute()">
-      Execute
-    </button>
-    <button
-      mat-raised-button
-      class="export-btn"
-      (click)="exportCsv()"
-      [disabled]="!rawData().length"
-    >
-      Export to CSV
-    </button>
-  </div>
-
-  <div *ngIf="errorText()" class="error-text">{{ errorText() }}</div>
-
-  <div *ngIf="rowsAffected() !== null" class="affected">
-    Rows affected: {{ rowsAffected() }}
-  </div>
-
-  <div class="result-table-wrapper" *ngIf="rawData().length">
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      class="result-table"
-    >
-      <ng-container
-        *ngFor="let column of displayedColumns()"
-        [matColumnDef]="column"
-      >
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          (click)="onSort(column)"
-          [class.sorted]="sortColumn() === column"
-          [class.sorted-asc]="sortColumn() === column && sortDirection() === 'asc'"
-          [class.sorted-desc]="sortColumn() === column && sortDirection() === 'desc'"
-        >
-          <span class="header-text">{{ column }}</span>
-          <span class="sort-indicator" *ngIf="sortColumn() === column">
-            {{ sortDirection() === 'asc' ? '▲' : '▼' }}
-          </span>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row[column] }}
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-    </table>
-  </div>
-
-  <div
-    class="pager"
-    *ngIf="rawData().length && totalPages() > 1"
-  >
-    <button mat-button (click)="back()" [disabled]="currentPage() === 0">
-      Back
-    </button>
-    <span class="page-info">
-      Page {{ currentPage() + 1 }} / {{ totalPages() }}
-    </span>
-    <button
-      mat-button
-      (click)="next()"
-      [disabled]="currentPage() >= totalPages() - 1"
-    >
-      Next
-    </button>
-  </div>
+  <ia-sql-results
+    [rawData]="rawData()"
+    [displayedColumns]="displayedColumns()"
+    [isLoading]="isLoading()"
+    [elapsedMs]="elapsedMs()"
+    [executionMs]="executionMs()"
+    [errorText]="errorText()"
+    [rowsAffected]="rowsAffected()"
+    [truncated]="truncated()"
+    [emptyResult]="emptyResult()"  ></ia-sql-results>
 </div>

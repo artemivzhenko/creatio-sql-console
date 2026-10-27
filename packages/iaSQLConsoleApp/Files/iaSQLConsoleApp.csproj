@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\.build-props\env.$(Configuration).props" Condition="Exists('..\..\..\.build-props\env.$(Configuration).props')" />
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
 		<CoreTargetFramework Condition="'$(CoreTargetFramework)' == ''">net472</CoreTargetFramework>
@@ -329,6 +330,7 @@
 	</ItemGroup>
 	<ItemGroup Label="Standalone package external assembly references" />
 	<ItemGroup Label="Entity Files">
+		<Compile Remove="$(RelativePkgFolderPath)/iaSQLConsoleApp/Schemas/iaExportLog/iaExportLog.cs" Condition="Exists('$(RelativePkgFolderPath)/iaSQLConsoleApp/Schemas/iaExportLog/iaExportLog.cs')" />
 		<Compile Remove="$(RelativePkgFolderPath)/iaSQLConsoleApp/Schemas/iaSQLConsole/iaSQLConsole.cs" Condition="Exists('$(RelativePkgFolderPath)/iaSQLConsoleApp/Schemas/iaSQLConsole/iaSQLConsole.cs')" />
 	</ItemGroup>
 	<ItemGroup Label="3rd Party References"></ItemGroup>

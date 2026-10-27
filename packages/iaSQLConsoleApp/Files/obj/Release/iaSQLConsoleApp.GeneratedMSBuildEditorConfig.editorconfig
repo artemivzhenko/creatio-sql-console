@@ -1,5 +1,8 @@
 is_global = true
 build_property.RootNamespace = iaSQLConsoleApp
-build_property.ProjectDir = D:\App\114104-studio\Terrasoft.WebApp\Terrasoft.Configuration\Pkg\iaSQLConsoleApp\Files\
+build_property.ProjectDir = C:\inetpub\wwwroot\clio\ti823\Terrasoft.WebApp\Terrasoft.Configuration\Pkg\iaSQLConsoleApp\Files\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

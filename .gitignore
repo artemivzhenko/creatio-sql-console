@@ -1,3 +1,7 @@
 component/node_modules/*
 component/.angular/*
+component/.fork-build/
 .nuget/*
+tmp/*
+forks/*
+tasks/sync-fork.js

@@ -43,9 +43,29 @@ define("iaSQLLog_ListPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					"columns": [
 						{
 							"id": "681bfd50-e4bb-8370-a546-90415852f6ed",
-							"code": "PDS_iaName",
-							"caption": "#ResourceString(PDS_iaName)#",
+							"code": "PDS_iaPreview",
+							"caption": "Query",
 							"dataValueType": 28
+						},
+						{
+							"id": "8a516ea2-c37f-4c4e-9fb1-5e6c7d8f9a01",
+							"code": "PDS_CreatedBy",
+							"caption": "Created by",
+							"dataValueType": 10
+						},
+						{
+							"id": "9b627fb3-d480-4d5f-8ac2-6f7d8e9fab12",
+							"code": "PDS_iaStart",
+							"caption": "Start",
+							"dataValueType": 7,
+							"width": 137
+						},
+						{
+							"id": "ac7380c4-e591-4e60-9bd3-708e9fa0bc23",
+							"code": "PDS_iaEnd",
+							"caption": "End",
+							"dataValueType": 7,
+							"width": 137
 						}
 					],
 					"placeholder": false,
@@ -63,6 +83,30 @@ define("iaSQLLog_ListPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 						}
 					}
 				}
+			},
+			{
+				"operation": "insert",
+				"name": "BackToConsoleButton",
+				"values": {
+					"type": "crt.Button",
+					"caption": "Back to console",
+					"color": "default",
+					"disabled": false,
+					"size": "large",
+					"iconPosition": "only-icon",
+					"visible": true,
+					"clicked": {
+						"request": "crt.OpenPageRequest",
+						"params": {
+							"schemaName": "iaSQLConsole_SectionPage"
+						}
+					},
+					"clickMode": "default",
+					"icon": "back-button-icon"
+				},
+				"parentName": "TitleContainer",
+				"propertyName": "items",
+				"index": 0
 			}
 		]/**SCHEMA_VIEW_CONFIG_DIFF*/,
 		viewModelConfigDiff: /**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/[
@@ -86,9 +130,24 @@ define("iaSQLLog_ListPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					"attributes"
 				],
 				"values": {
-					"PDS_iaName": {
+					"PDS_iaPreview": {
 						"modelConfig": {
-							"path": "PDS.iaName"
+							"path": "PDS.iaPreview"
+						}
+					},
+					"PDS_CreatedBy": {
+						"modelConfig": {
+							"path": "PDS.CreatedBy"
+						}
+					},
+					"PDS_iaStart": {
+						"modelConfig": {
+							"path": "PDS.iaStart"
+						}
+					},
+					"PDS_iaEnd": {
+						"modelConfig": {
+							"path": "PDS.iaEnd"
 						}
 					}
 				}
@@ -136,8 +195,17 @@ define("iaSQLLog_ListPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 				"values": {
 					"entitySchemaName": "iaSQLConsole",
 					"attributes": {
-						"iaName": {
-							"path": "iaName"
+						"iaPreview": {
+							"path": "iaPreview"
+						},
+						"CreatedBy": {
+							"path": "CreatedBy"
+						},
+						"iaStart": {
+							"path": "iaStart"
+						},
+						"iaEnd": {
+							"path": "iaEnd"
 						}
 					}
 				}

@@ -1,0 +1,14 @@
+﻿{
+  "Descriptor": {
+    "UId": "7c337f72-631f-4852-8974-dd9ec3090719",
+    "Name": "iaSQLExportLog_ListPage",
+    "ModifiedOnUtc": "\/Date(1792844002000)\/",
+    "Parent": {
+      "UId": "3334b6c0-c8ab-4b59-a367-0c9182102552",
+      "Name": "ListPageV2Template"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "SQL Export log",
+    "DependsOn": []
+  }
+}

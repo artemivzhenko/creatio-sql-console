@@ -2,10 +2,10 @@
   "Descriptor": {
     "UId": "97768802-8b0b-49b2-a7ee-2eb9e22b5788",
     "Name": "iaSQLConsole_SectionPage",
-    "ModifiedOnUtc": "\/Date(1763199582000)\/",
+    "ModifiedOnUtc": "\/Date(1792844036000)\/",
     "Parent": {
-      "UId": "b7b898d0-8c77-4953-c097-23fa6800da02",
-      "Name": "ListPageV3Template"
+      "UId": "3334b6c0-c8ab-4b59-a367-0c9182102552",
+      "Name": "ListPageV2Template"
     },
     "ManagerName": "ClientUnitSchemaManager",
     "Caption": "SQL Console section page",

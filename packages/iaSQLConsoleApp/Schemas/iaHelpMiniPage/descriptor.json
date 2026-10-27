@@ -1,0 +1,14 @@
+﻿{
+  "Descriptor": {
+    "UId": "992ce276-f2ee-4ff5-8da4-26098216c2f8",
+    "Name": "iaHelpMiniPage",
+    "ModifiedOnUtc": "\/Date(1792842639000)\/",
+    "Parent": {
+      "UId": "ecdcc8ff-272c-4957-9381-7d74ce17e140",
+      "Name": "BaseMiniPageTemplate"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Help mini page",
+    "DependsOn": []
+  }
+}

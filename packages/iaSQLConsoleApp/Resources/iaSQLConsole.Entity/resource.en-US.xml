@@ -3,7 +3,12 @@
 	<Group Type="String">
 		<Items>
 			<Item Name="Caption" Value="SQL Console" />
+			<Item Name="Columns.iaEnd.Caption" Value="End" />
+			<Item Name="Columns.iaException.Caption" Value="Exception" />
+			<Item Name="Columns.iaIpAddress.Caption" Value="Ip address" />
 			<Item Name="Columns.iaName.Caption" Value="Name" />
+			<Item Name="Columns.iaPreview.Caption" Value="Preview" />
+			<Item Name="Columns.iaStart.Caption" Value="Start" />
 		</Items>
 	</Group>
 </Resources>

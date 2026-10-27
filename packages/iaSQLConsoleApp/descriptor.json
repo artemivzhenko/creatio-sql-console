@@ -4,7 +4,7 @@
     "Name": "iaSQLConsoleApp",
     "Type": 1,
     "ModifiedOnUtc": "\/Date(1731959136000)\/",
-    "Maintainer": "IvzhenkoArtem",
+    "Maintainer": "Artem1vzhenko",
     "ProjectPath": "Files/iaSQLConsoleApp.csproj",
     "DependsOn": [
       {

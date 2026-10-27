@@ -2,336 +2,178 @@ import {
   Component,
   Input,
   signal,
-  computed,
-  ElementRef,
-  ViewChild,
-  AfterViewInit,
-  OnDestroy
+  Output,
+  EventEmitter,
+  NgZone,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClientService } from '@creatio-devkit/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { CrtInput, CrtOutput, CrtViewElement } from '@creatio-devkit/common';
+import { SqlEditorComponent } from '../sql-editor/sql-editor.component';
+import { SqlResultsComponent } from '../sql-results/sql-results.component';
 
-import { basicSetup, EditorView } from 'codemirror';
-import { EditorState } from '@codemirror/state';
-import { sql } from '@codemirror/lang-sql';
-import { CrtViewElement } from '@creatio-devkit/common';
-import { keymap } from '@codemirror/view';
-
-type QueryResult = {
+export type QueryResult = {
   success: boolean;
   type: 'DataSet' | 'NonQuery';
-  data?: Record<string, unknown>[] | any[];
+  columns?: string[];
+  rows?: unknown[][];
+  truncated?: boolean;
   rowsAffected?: number;
   error?: string;
 };
 
 @Component({
-  selector: 'ia-sql-console-component',
+  selector: 'ia-sqlconsole',
   templateUrl: './sql-console.component.html',
   styleUrls: ['./sql-console.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatTableModule
-  ]
+  imports: [CommonModule, SqlEditorComponent, SqlResultsComponent]
 })
 @CrtViewElement({
   selector: 'ia-sqlconsole',
   type: 'ia.SqlConsole'
 })
-export class SqlConsoleComponent implements AfterViewInit, OnDestroy {
-  @Input() pageSize = 100;
+export class SqlConsoleComponent {
+  @Input() @CrtInput()
+  sqlQuery: string = '';
 
-  @ViewChild('editor', { static: true }) editorContainer!: ElementRef<HTMLElement>;
+  @Output() @CrtOutput()
+  sqlQueryChange = new EventEmitter<string>();
 
-  editorView!: EditorView;
+  @Output() @CrtOutput()
+  executeQuery = new EventEmitter<string>();
 
-  private readonly storageKey = 'ia-sql-console-last-query';
+  @Output() @CrtOutput()
+  saveQuery = new EventEmitter<string>();
 
-  queryText = '';
+  @Input() @CrtInput()
+  // The page sets { pending: true } before calling the service, so its Execute button shows the spinner too.
+  set queryResult(value: QueryResult | { pending: true } | null) {
+    if (!value) return;
+    if ('pending' in value) {
+      if (!this.isLoading()) {
+        this.clearResult();
+        this.startTimer();
+      }
+      return;
+    }
+    this.applyResult(value);
+  }
+
+  private readonly zone = inject(NgZone);
+
+  isLoading = signal(false);
+  elapsedMs = signal(0);
+  executionMs = signal<number | null>(null);
+
   rawData = signal<Record<string, unknown>[]>([]);
+  displayedColumns = signal<string[]>([]);
   rowsAffected = signal<number | null>(null);
   errorText = signal<string | null>(null);
-  currentPage = signal(0);
-  displayedColumns = signal<string[]>([]);
-  dataSource = new MatTableDataSource<Record<string, unknown>>([]);
+  truncated = signal(false);
+  emptyResult = signal(false);
 
-  sortColumn = signal<string | null>(null);
-  sortDirection = signal<'asc' | 'desc'>('asc');
+  private queryStartTime = 0;
+  private timerRef: any = null;
 
-  readonly sortedData = computed(() => {
-    const data = [...this.rawData()];
-    const col = this.sortColumn();
-    const dir = this.sortDirection();
-
-    if (!col) {
-      return data;
-    }
-
-    return data.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
-      const av = a[col];
-      const bv = b[col];
-
-      if (av == null && bv == null) {
-        return 0;
-      }
-      if (av == null) {
-        return dir === 'asc' ? -1 : 1;
-      }
-      if (bv == null) {
-        return dir === 'asc' ? 1 : -1;
-      }
-
-      const an = typeof av === 'number' ? av : Number(av);
-      const bn = typeof bv === 'number' ? bv : Number(bv);
-
-      if (!Number.isNaN(an) && !Number.isNaN(bn)) {
-        return dir === 'asc' ? an - bn : bn - an;
-      }
-
-      const as = String(av).toLowerCase();
-      const bs = String(bv).toLowerCase();
-
-      if (as < bs) {
-        return dir === 'asc' ? -1 : 1;
-      }
-      if (as > bs) {
-        return dir === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-  });
-
-  readonly pagedData = computed(() => {
-    const start = this.currentPage() * this.pageSize;
-    return this.sortedData().slice(start, start + this.pageSize);
-  });
-
-  readonly totalPages = computed(() =>
-    Math.ceil(this.rawData().length / this.pageSize)
-  );
-
-  ngAfterViewInit(): void {
-    this.loadQueryFromStorage();
-
-    const state = EditorState.create({
-      doc: this.queryText,
-      extensions: [
-        basicSetup,
-        sql(),
-        keymap.of([
-          {
-            key: 'Mod-z',
-            run: () => {
-              this.execute();
-              return true;
-            }
-          },
-          {
-            key: 'Mod-x',
-            run: view => {
-              view.dispatch({
-                changes: { from: 0, to: view.state.doc.length, insert: '' }
-              });
-              this.queryText = '';
-              this.saveQueryToStorage();
-              return true;
-            }
-          }
-        ]),
-        EditorView.updateListener.of(u => {
-          if (u.docChanged) {
-            this.queryText = u.state.doc.toString();
-            this.saveQueryToStorage();
-          }
-        })
-      ]
-    });
-
-    this.editorView = new EditorView({
-      state,
-      parent: this.editorContainer.nativeElement
-    });
+  onQueryReady(text: string): void {
+    this.sqlQuery = text;
+    this.sqlQueryChange.emit(text);
   }
 
-  ngOnDestroy(): void {
-    this.editorView?.destroy();
+  onQueryChanged(text: string): void {
+    this.sqlQuery = text;
+    this.sqlQueryChange.emit(text);
   }
 
-  private loadQueryFromStorage(): void {
-    try {
-      if (typeof window === 'undefined') {
-        return;
-      }
-      const stored = window.localStorage.getItem(this.storageKey);
-      if (stored !== null) {
-        this.queryText = stored;
-      }
-    } catch {
-    }
-  }
+  onExecute(queryText: string): void {
+    this.clearResult();
 
-  private saveQueryToStorage(): void {
-    try {
-      if (typeof window === 'undefined') {
-        return;
-      }
-      window.localStorage.setItem(this.storageKey, this.queryText ?? '');
-    } catch {
-    }
-  }
-
-  async execute(): Promise<void> {
-    this.errorText.set(null);
-    this.rawData.set([]);
-    this.rowsAffected.set(null);
-    this.displayedColumns.set([]);
-    this.currentPage.set(0);
-    this.sortColumn.set(null);
-    this.sortDirection.set('asc');
-
-    if (!this.queryText || !this.queryText.trim()) {
+    if (!queryText.trim()) {
       this.errorText.set('Query text cannot be empty.');
       return;
     }
 
-    const http = new HttpClientService();
-
-    try {
-      const resp: any = await http.post(
-        '/rest/iaQueryService/ExecuteQuery',
-        { queryText: this.queryText },
-        {}
-      );
-
-      const result: QueryResult =
-        resp?.body?.ExecuteQueryResult ?? resp?.body ?? resp;
-
-      if (!result || result.success === false) {
-        this.errorText.set(result?.error || 'Unknown error');
-        return;
-      }
-
-      if (result.type === 'DataSet' && Array.isArray(result.data)) {
-        let rows: any[] = result.data;
-
-        if (Array.isArray(rows[0])) {
-          rows = rows.map((row: any[]) =>
-            row.reduce((acc: any, kv: any) => {
-              const k = kv.Key ?? kv.key ?? kv[0];
-              acc[k] = kv.Value ?? kv.value ?? kv[1];
-              return acc;
-            }, {})
-          );
-        }
-
-        rows = rows.map(r => {
-          Object.keys(r).forEach(k => {
-            const v = r[k];
-            if (typeof v === 'string' && v.startsWith('/Date(') && v.endsWith(')/')) {
-              const plusIndex = v.indexOf('+', 6);
-              const msPart = plusIndex > 0
-                ? v.slice(6, plusIndex)
-                : v.slice(6, v.length - 2);
-              const ms = parseInt(msPart, 10);
-              const d = new Date(ms);
-              r[k] =
-                d.getFullYear() +
-                '-' +
-                String(d.getMonth() + 1).padStart(2, '0') +
-                '-' +
-                String(d.getDate()).padStart(2, '0') +
-                ' ' +
-                String(d.getHours()).padStart(2, '0') +
-                ':' +
-                String(d.getMinutes()).padStart(2, '0') +
-                ':' +
-                String(d.getSeconds()).padStart(2, '0');
-            }
-          });
-          return r;
-        });
-
-        const tableRows = rows as Record<string, unknown>[];
-        this.rawData.set(tableRows);
-
-        if (tableRows.length) {
-          this.displayedColumns.set(Object.keys(tableRows[0]));
-          this.updateDataSource();
-        } else {
-          this.updateDataSource();
-        }
-      } else if (result.type === 'NonQuery') {
-        this.rowsAffected.set(result.rowsAffected ?? 0);
-        this.updateDataSource();
-      } else {
-        this.errorText.set('Unsupported response type.');
-      }
-    } catch (e: any) {
-      this.errorText.set(e?.message ?? 'Network error');
-    }
+    this.sqlQuery = queryText;
+    this.startTimer();
+    this.sqlQueryChange.emit(queryText);
+    this.executeQuery.emit(queryText);
   }
 
-  updateDataSource(): void {
-    this.dataSource = new MatTableDataSource(this.pagedData());
+  onSave(queryText: string): void {
+    this.saveQuery.emit(queryText);
   }
 
-  next(): void {
-    if (this.currentPage() < this.totalPages() - 1) {
-      this.currentPage.set(this.currentPage() + 1);
-      this.updateDataSource();
-    }
+  private clearResult(): void {
+    this.errorText.set(null);
+    this.rawData.set([]);
+    this.rowsAffected.set(null);
+    this.displayedColumns.set([]);
+    this.truncated.set(false);
+    this.emptyResult.set(false);
   }
 
-  back(): void {
-    if (this.currentPage() > 0) {
-      this.currentPage.set(this.currentPage() - 1);
-      this.updateDataSource();
-    }
-  }
+  private applyResult(result: QueryResult): void {
+    this.stopTimer();
+    this.clearResult();
 
-  onSort(column: string): void {
-    if (this.sortColumn() === column) {
-      this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
-    } else {
-      this.sortColumn.set(column);
-      this.sortDirection.set('asc');
-    }
-    this.currentPage.set(0);
-    this.updateDataSource();
-  }
-
-  exportCsv(): void {
-    if (!this.rawData().length) {
+    if (!result.success) {
+      this.errorText.set(result.error || 'Unknown error');
       return;
     }
-    const cols = this.displayedColumns();
-    const lines: string[] = [cols.join(',')];
 
-    for (const row of this.rawData()) {
-      lines.push(
-        cols
-          .map(c => {
-            const value = row[c] ?? '';
-            return `"${value.toString().replace(/"/g, '""')}"`;
-          })
-          .join(',')
-      );
+    if (result.type === 'DataSet' && Array.isArray(result.rows)) {
+      const columns = result.columns ?? [];
+      this.rawData.set(this.processRows(columns, result.rows));
+      this.displayedColumns.set(columns);
+      this.truncated.set(!!result.truncated);
+      this.emptyResult.set(result.rows.length === 0);
+    } else if (result.type === 'NonQuery') {
+      this.rowsAffected.set(result.rowsAffected ?? 0);
+    } else {
+      this.errorText.set('Unsupported response type.');
     }
+  }
 
-    const blob = new Blob([lines.join('\r\n')], {
-      type: 'text/csv;charset=utf-8;'
+  private processRows(columns: string[], rows: unknown[][]): Record<string, unknown>[] {
+    return rows.map(row => {
+      const record: Record<string, unknown> = {};
+      columns.forEach((column, i) => {
+        const v = row[i];
+        if (typeof v === 'string' && v.startsWith('/Date(') && v.endsWith(')/')) {
+          const plus = v.indexOf('+', 6);
+          const ms = plus > 0 ? v.slice(6, plus) : v.slice(6, v.length - 2);
+          const d = new Date(parseInt(ms, 10));
+          record[column] = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ` +
+                 `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+        } else {
+          record[column] = v;
+        }
+      });
+      return record;
     });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'query_result.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+  }
+
+  private startTimer(): void {
+    this.queryStartTime = Date.now();
+    this.elapsedMs.set(0);
+    this.isLoading.set(true);
+    this.executionMs.set(null);
+    this.zone.runOutsideAngular(() => {
+      this.timerRef = setInterval(() => {
+        this.zone.run(() => this.elapsedMs.set(Date.now() - this.queryStartTime));
+      }, 100);
+    });
+  }
+
+  private stopTimer(): void {
+    if (this.timerRef) {
+      clearInterval(this.timerRef);
+      this.timerRef = null;
+    }
+    if (this.isLoading()) {
+      this.executionMs.set(Date.now() - this.queryStartTime);
+      this.isLoading.set(false);
+    }
   }
 }
