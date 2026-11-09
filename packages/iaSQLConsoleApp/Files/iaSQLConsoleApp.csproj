@@ -76,6 +76,7 @@
 	<Choose>
 		<When Condition="'$(TargetFramework)' == 'net472'">
 			<ItemGroup>
+				<Reference Include="System.IO.Compression" />
 				<Reference Include="System.ServiceModel" />
 				<Reference Include="System.ServiceModel.Activation" />
 				<Reference Include="System.ServiceModel.Web" />
